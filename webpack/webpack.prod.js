@@ -4,6 +4,9 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
     mode: "production",
     devtool: false,
+    devServer: {
+        allowedHosts: ["raspi.nd-khoa.com"],
+    },
     performance: {
         maxEntrypointSize: 512000,
         maxAssetSize: 512000,
