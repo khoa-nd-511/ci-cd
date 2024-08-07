@@ -1,5 +1,5 @@
 services:
-    ci-cd:
-        image: ci-cd-app:1.0
+    ci-cd-app:
+        image: 295506574119.dkr.ecr.ap-southeast-1.amazonaws.com/ci-cd:1.0
         ports:
             - 8080:8080
