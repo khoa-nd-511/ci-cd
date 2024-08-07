@@ -1,0 +1,5 @@
+services:
+    ci-cd:
+        image: ci-cd-app:1.0
+        ports:
+            - 8080:8080
