@@ -8,7 +8,7 @@ const App = () => {
         <main className="w-full min-h-screen flex">
             <section className="mx-auto mt-10">
                 <h1 className="text-6xl font-bold text-blue-500">
-                    Hello World
+                    Hello World !
                 </h1>
                 <Button
                     variant="outline"
