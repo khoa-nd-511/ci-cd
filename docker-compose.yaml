@@ -1,5 +1,7 @@
 services:
     ci-cd-app:
-        image: 295506574119.dkr.ecr.ap-southeast-1.amazonaws.com/ci-cd:1.0
+        build:
+            context: .
+            dockerfile: Dockerfile
         ports:
             - 8080:8080
