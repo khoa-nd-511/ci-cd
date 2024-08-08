@@ -8,7 +8,10 @@ pipeline {
             
             steps {
                 echo "Installing packages..."
-                sh 'yarn'
+
+                node("NodeJS-18.20.1") {
+                    sh 'yarn'
+                }
             }
         }
 
@@ -16,7 +19,11 @@ pipeline {
             
             steps {
                 echo "Executing tests..."
-                sh 'yarn test'
+
+                node("NodeJS-18.20.1") {
+                    sh 'yarn test'
+                }
+
                 echo "Tests executed successfully ⚙️︎"
             }
         }
@@ -25,7 +32,11 @@ pipeline {
             
             steps {
                 echo "Building app..."
-                sh 'yarn build'
+
+                node("NodeJS-18.20.1") {
+                    sh 'yarn build'
+                }
+
                 echo "App is built successfully 💪"
             }
         }
