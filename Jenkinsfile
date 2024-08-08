@@ -1,39 +1,36 @@
 pipeline {
-
     agent any
 
     environment {
-        AWS_ACCOUNT_ID="295506574119"
-        AWS_DEFAULT_REGION="ap-southeast-1"
-        IMAGE_REPO_NAME="ci-cd"
-        IMAGE_TAG="latest"
-        REPOSITORY_URI = "295506574119.dkr.ecr.ap-southeast-1.amazonaws.com/ci-cd"
+        AWS_ACCOUNT_ID = '295506574119'
+        AWS_DEFAULT_REGION = 'ap-southeast-1'
+        IMAGE_REPO_NAME = 'ci-cd'
+        IMAGE_TAG = 'latest'
+        REPOSITORY_URI = '295506574119.dkr.ecr.ap-southeast-1.amazonaws.com/ci-cd'
     }
 
     stages {
-
-        stage("Install") {
+        stage('Install') {
             steps {
-                nodejs("NodeJS-18.20.1") {
+                nodejs('NodeJS-18.20.1') {
                     sh 'yarn'
                 }
             }
         }
 
-        stage("Test") {
+        stage('Test') {
             steps {
-                echo "Executing tests..."
+                echo 'Executing tests...'
 
-                nodejs("NodeJS-18.20.1") {
+                nodejs('NodeJS-18.20.1') {
                     sh 'yarn test'
                 }
             }
         }
 
-        stage("Build") {
-            
+        stage('Build') {
             steps {
-                nodejs("NodeJS-18.20.1") {
+                nodejs('NodeJS-18.20.1') {
                     sh 'yarn build'
                 }
             }
@@ -55,10 +52,9 @@ pipeline {
             }
         }
 
-        stage("Pushing to ECR") {
-            
+        stage('Pushing to ECR') {
             steps {
-                script{
+                script {
                     sh """docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"""
                     sh """docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"""
                 }
@@ -73,9 +69,9 @@ pipeline {
         failure {
             echo 'Pipeline failed.'
         }
-        // always {
-        //     echo 'Cleaning up...'
-        //     // Add any cleanup tasks here if needed
-        // }
+    // always {
+    //     echo 'Cleaning up...'
+    //     // Add any cleanup tasks here if needed
+    // }
     }
 }
