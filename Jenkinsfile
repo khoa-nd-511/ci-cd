@@ -8,7 +8,7 @@ pipeline {
             
             steps {
                 echo "Executing tests..."
-                echo "Tests executed successfully..."
+                echo "Tests executed successfully ⚙️︎"
             }
         }
 
@@ -16,14 +16,15 @@ pipeline {
             
             steps {
                 echo "Building app..."
-                echo "App is built successfully..."
+                echo "App is built successfully 💪"
             }
         }
 
         stage("deploy") {
             
             steps {
-                echo "Deploing..."
+                echo "Deploying..."
+                echo "App is deployed successfully 🚀"
             }
         }
     }
