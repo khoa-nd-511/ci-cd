@@ -1,4 +1,6 @@
 pipeline {
+    @Library('github.com/releaseworks/jenkinslib') _
+
     agent any
 
     environment {
@@ -36,27 +38,18 @@ pipeline {
             }
         }
 
-        stage('Logging into AWS ECR') {
-            steps {
-                script {
-                    sh """aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"""
-                }
-            }
-        }
-
-        stage('Building image') {
-            steps {
-                script {
-                    dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
-                }
-            }
-        }
-
         stage('Pushing to ECR') {
             steps {
                 script {
-                    sh """docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"""
-                    sh """docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"""
+                    withCredentials() {
+                        withElasticContainerRegistry {
+                            // Build image in the current working directory
+                            def app = docker.build("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/app")
+
+                            // Push to ECR
+                            app.push("${env.BUILD_NUMBER}")
+                        }
+                    }
                 }
             }
         }
@@ -69,9 +62,5 @@ pipeline {
         failure {
             echo 'Pipeline failed.'
         }
-    // always {
-    //     echo 'Cleaning up...'
-    //     // Add any cleanup tasks here if needed
-    // }
     }
 }
