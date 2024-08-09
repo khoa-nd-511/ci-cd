@@ -1,5 +1,6 @@
+@Library("github.com/releaseworks/jenkinslib") _
+
 pipeline {
-    @Library('github.com/releaseworks/jenkinslib') _
 
     agent any
 
@@ -41,7 +42,7 @@ pipeline {
         stage('Pushing to ECR') {
             steps {
                 script {
-                    withCredentials() {
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'aws-credentials', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                         withElasticContainerRegistry {
                             // Build image in the current working directory
                             def app = docker.build("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/app")
